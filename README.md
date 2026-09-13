@@ -10,8 +10,10 @@ HarborLens turns a changing vessel schedule into an explainable 72-hour operatin
 |---|---|
 | **Team Name** | HarborLens Crew |
 | **Track** | AI |
-| **Team Lead** | REPLACE WITH TEAM LEAD - REPLACE_WITH_LEAD_EMAIL@example.com |
-| **Members** | REPLACE WITH TEAM MEMBER - REPLACE_WITH_MEMBER_EMAIL@example.com |
+| **Team Lead** | Dhruv Patel    -  24ce077@charusat.edu.in |
+| **Members** | 1. Kavya Patel   -  24aiml038@charusat.edu.in
+                2. Tirth Kakadia -  25aiml025@charusat.edu.in
+                3. Om Patel      -  25ce074@charusat.edu.in |
 
 ---
 
@@ -56,7 +58,9 @@ HarborLens uses deterministic, explainable risk calculation to rank vessels by s
 ├── README.md                # Project overview
 ├── src/                     # Application source code
 │   ├── .env.example         # Production adapter variable template
-│   ├── README.md            # Source layout
+│   ├── README.md            # Frontend/backend source map
+│   ├── frontend/            # Browser application
+│   └── backend/             # Server and future data adapters
 │   └── bob-skills/          # IBM Bob project skill
 ├── docs/                    # Written documentation
 │   ├── problem-statement.md
@@ -83,7 +87,7 @@ git clone https://github.com/dhruv492/bob-ai-hackathon-harborlenscrew.git
 cd bob-ai-hackathon-harborlenscrew
 
 # 2. Run the dependency-free local server
-python src/server.py
+python src/backend/server.py
 ```
 
 Open `http://localhost:8000`. Full prerequisites, verification steps, IBM Bob workflow, and troubleshooting are in [docs/setup-guide.md](docs/setup-guide.md).

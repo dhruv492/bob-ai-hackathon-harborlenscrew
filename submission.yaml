@@ -5,11 +5,15 @@ team:
   name: "HarborLens Crew"
   track: "AI"
   lead:
-    name: "REPLACE WITH TEAM LEAD"
-    email: "REPLACE_WITH_LEAD_EMAIL@example.com"
+    name: "Dhruv Patel"
+    email: "24ce077@charusat.edu.in"
   members:
-    - name: "REPLACE WITH TEAM MEMBER"
-      email: "REPLACE_WITH_MEMBER_EMAIL@example.com"
+    - name: "Kavya Patel"
+      email: "24aiml038@charusat.edu.in"
+    - name: "Tirth Kakadia"
+      email: "25aiml025@charusat.edu.in"
+    - name: "Om Patel"
+      email: "25cs074@charusat.edu.in"
 
 submission:
   title: "HarborLens: Explainable Port Congestion Copilot"

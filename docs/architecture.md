@@ -15,8 +15,8 @@ flowchart LR
 | Component | Technology | Responsibility |
 | --- | --- | --- |
 | Dashboard | HTML, CSS, vanilla JavaScript | Displays queue, plan, and scenario controls |
-| Risk engine | `src/app.js` | Deterministic weighted risk calculation and reason labels |
-| Plan generator | `src/app.js` | Sorts compatible vessels into feasible berth slots |
+| Risk engine | `src/frontend/app.js` | Deterministic weighted risk calculation and reason labels |
+| Plan generator | `src/frontend/app.js` | Sorts compatible vessels into feasible berth slots |
 | Bob skill | Markdown prompt pack | Guides IBM Bob's codebase investigation and briefing |
 | Development server | Python standard library | Serves the static application locally |
 

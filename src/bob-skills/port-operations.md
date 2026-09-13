@@ -6,7 +6,7 @@ Use this skill when a HarborLens supervisor needs an auditable operations brief 
 
 ## Grounding rules
 
-1. Inspect `src/app.js` before explaining a score or assignment.
+1. Inspect `src/frontend/app.js` before explaining a score or assignment.
 2. Treat data shown by HarborLens as a scenario, not live terminal truth.
 3. Do not invent weather, berth, cargo, carrier, or regulatory facts.
 4. Cite vessel IDs and visible risk drivers for every recommended action.

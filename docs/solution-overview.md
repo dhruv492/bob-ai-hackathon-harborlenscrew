@@ -6,7 +6,7 @@ The differentiator is traceability. A risk score alone is not a recommendation, 
 
 ## IBM Bob workflow
 
-The `src/bob-skills/port-operations.md` file is a reusable IBM Bob skill. It tells Bob how to inspect this codebase, validate the plan data, and produce a BLUF-style shift brief without inventing facts. The app's **Bob-ready brief** panel emits a bounded, structured context that the skill can consume. This makes Bob useful for investigation and narrative synthesis while the deterministic engine remains the source of operational calculations.
+The `src/bob-skills/port-operations.md` file is a reusable IBM Bob skill. It tells Bob how to inspect this codebase, validate the plan data, and produce a BLUF-style shift brief without inventing facts. The app's **Bob-ready brief** panel emits a bounded, structured context that the skill can consume. This makes Bob useful for investigation and narrative synthesis while the deterministic engine remains the source of operational calculations in `src/frontend/app.js`.
 
 ## User journey
 
