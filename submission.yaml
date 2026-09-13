@@ -1,0 +1,59 @@
+# =============================================================================
+# IBM Bob Hackathon Submission Metadata
+# =============================================================================
+team:
+  name: "HarborLens Crew"
+  track: "AI"
+  lead:
+    name: "REPLACE WITH TEAM LEAD"
+    email: "REPLACE_WITH_LEAD_EMAIL@example.com"
+  members:
+    - name: "REPLACE WITH TEAM MEMBER"
+      email: "REPLACE_WITH_MEMBER_EMAIL@example.com"
+
+submission:
+  title: "HarborLens: Explainable Port Congestion Copilot"
+  tagline: "Turn changing vessel schedules into an explainable 72-hour port action plan."
+  problem_statement: >
+    Port shift supervisors allocate berths and cranes from fragmented schedules and spreadsheets,
+    so congestion risks are discovered after vessels queue and high-priority cargo is delayed.
+  solution_summary: >
+    HarborLens scores vessel congestion risk from schedule, berth, dwell, and disruption signals,
+    recommends a constrained 72-hour operating plan, and gives IBM Bob structured context for an
+    auditable shift brief.
+  key_features:
+    - "Explainable vessel congestion risk scoring"
+    - "Berth and crane assignment recommendations"
+    - "Interactive weather, capacity, and arrival-delay simulation"
+    - "72-hour operations brief with prioritized actions"
+    - "IBM Bob custom skill and grounded briefing context"
+
+  tech_stack:
+    languages: ["JavaScript", "HTML", "CSS", "Python"]
+    frameworks: ["Python standard-library HTTP server"]
+    ibm_technologies: ["IBM Bob", "IBMid authentication"]
+    databases: []
+    other: ["GitHub Actions", "Mermaid", "ReportLab"]
+
+  what_we_are_most_proud_of: >
+    HarborLens makes recommendations challengeable: every risk score exposes the operational drivers,
+    scenarios update the plan deterministically, and the IBM Bob workflow is grounded in the same
+    structured plan visible to the supervisor.
+
+  known_limitations: >
+    The prototype uses synthetic data and a transparent heuristic rather than a production-grade
+    optimization solver. It needs authenticated terminal, AIS, weather, and labor feeds, plus human
+    approval and audit logging, before operational use.
+
+# =============================================================================
+# ARTIFACT LOCATIONS
+# These paths are relative to the repository root.
+# =============================================================================
+artifacts:
+  source_code: "src/"
+  setup_guide: "docs/setup-guide.md"
+  architecture_doc: "docs/architecture.md"
+  demo_video: "demo/demo-video-link.txt"
+  live_demo: "demo/live-demo-url.txt"
+  screenshots: "demo/screenshots/"
+  presentation: "presentation/"

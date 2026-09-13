@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HarborLens, explainable port congestion planning." />
+    <title>HarborLens | Port Operations Copilot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">H</span><div><strong>HarborLens</strong><small>Port operations copilot</small></div></div>
+        <div class="topbar-status"><span class="dot"></span> Scenario: <strong id="scenario-name">Baseline plan</strong><time id="clock"></time></div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div><p class="eyebrow">NEXT 72 HOURS</p><h1 id="page-title">Make congestion visible before it becomes a queue.</h1><p class="lede">An explainable operating plan for berths, cranes, and priority cargo.</p></div>
+        <button class="primary" id="brief-button">Generate shift brief <span aria-hidden="true">→</span></button>
+      </section>
+
+      <section class="metrics" aria-label="Operational picture" id="metrics"></section>
+
+      <div class="dashboard-grid">
+        <section class="panel queue-panel" aria-labelledby="queue-title">
+          <div class="panel-heading"><div><p class="eyebrow">PRIORITY QUEUE</p><h2 id="queue-title">Vessels needing attention</h2></div><span class="legend"><i class="critical"></i>Critical <i class="watch"></i>Watch</span></div>
+          <div id="vessel-list" class="vessel-list"></div>
+        </section>
+
+        <aside class="panel scenario-panel" aria-labelledby="scenario-title">
+          <p class="eyebrow">WHAT-IF STUDIO</p><h2 id="scenario-title">Stress-test the plan</h2><p class="subtle">Test operational pressure before the shift absorbs it.</p>
+          <label for="weather">Weather severity <output id="weather-value">Moderate</output></label>
+          <input id="weather" type="range" min="0" max="2" value="1" step="1" />
+          <label for="capacity">Unavailable berths <output id="capacity-value">0</output></label>
+          <input id="capacity" type="range" min="0" max="2" value="0" step="1" />
+          <label for="arrival">Arrival delay <output id="arrival-value">0 hours</output></label>
+          <input id="arrival" type="range" min="0" max="12" value="0" step="2" />
+          <div class="scenario-actions"><button class="secondary" id="reset-button">Reset</button><button class="primary" id="apply-button">Apply scenario</button></div>
+          <div class="callout"><strong>Decision boundary</strong><br />Recommendations require supervisor approval. This prototype never controls terminal systems.</div>
+        </aside>
+      </div>
+
+      <section class="panel plan-panel" aria-labelledby="plan-title">
+        <div class="panel-heading"><div><p class="eyebrow">BERTH PLAN</p><h2 id="plan-title">Recommended 72-hour sequence</h2></div><span id="plan-note" class="subtle">Compatible berth first, urgency second</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Window</th><th>Berth</th><th>Vessel</th><th>Cargo / priority</th><th>Cranes</th><th>Recommendation</th></tr></thead><tbody id="plan-body"></tbody></table></div>
+      </section>
+
+      <section class="panel brief-panel" id="brief-panel" aria-labelledby="brief-title" hidden>
+        <div class="panel-heading"><div><p class="eyebrow">IBM BOB-READY BRIEF</p><h2 id="brief-title">Grounded shift brief</h2></div><span class="tag">Structured context</span></div>
+        <div id="brief-content"></div>
+      </section>
+    </main>
+    <footer>HarborLens prototype · Synthetic operational data · Decisions remain human-approved</footer>
+    <script src="app.js"></script>
+  </body>
+</html>
