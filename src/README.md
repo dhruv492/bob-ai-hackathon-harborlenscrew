@@ -26,6 +26,8 @@ python src/backend/server.py
 
 The backend serves `src/frontend/` at `http://localhost:8000`. The prototype has no package installation or environment-variable requirement.
 
+Verify the backend independently at `http://localhost:8000/health`.
+
 ## Extension boundary
 
 Keep browser UI and deterministic planning logic in `frontend/`. Add authenticated terminal, AIS, weather, labor, or optimization integrations to `backend/` so the presentation layer remains independent of production data providers.

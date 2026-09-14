@@ -22,6 +22,7 @@ Open `http://localhost:8000`. No package installation, account, or external API 
 2. Move **Weather severity** to `Severe` and select **Apply scenario**.
 3. Confirm that risk scores and the 72-hour plan update.
 4. Select **Generate shift brief** and confirm that it cites vessel IDs from the current plan.
+5. Open `http://localhost:8000/health` and confirm it returns `{"status": "ok"}`.
 
 ## IBM Bob workflow
 

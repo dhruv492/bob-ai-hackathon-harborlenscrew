@@ -18,7 +18,7 @@ flowchart LR
 | Risk engine | `src/frontend/app.js` | Deterministic weighted risk calculation and reason labels |
 | Plan generator | `src/frontend/app.js` | Sorts compatible vessels into feasible berth slots |
 | Bob skill | Markdown prompt pack | Guides IBM Bob's codebase investigation and briefing |
-| Development server | Python standard library | Serves the static application locally |
+| Development server | Python standard library | Serves the static application locally and exposes `/health` |
 
 ## Data flow
 
