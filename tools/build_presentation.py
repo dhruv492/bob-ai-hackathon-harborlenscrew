@@ -91,25 +91,25 @@ for item in ["Explainable risk drivers", "Berth and crane recommendation", "Weat
 c.showPage()
 
 # 5 isolation
-title(c, "Multi-user operations", "Each supervisor sees their own fleet, not a shared queue", 5)
+title(c, "Multi-user operations", "Each supervisor has a private fleet", 5)
 cards = [
     ("Sign in", "Register, login, or demo SSO issues a session token stored in the browser."),
-    ("Own the data", "GET/POST/PUT/DELETE /api/vessels require Bearer auth and filter by user_id."),
+    ("Own the data", "Vessel APIs require Bearer auth and return only that user's records."),
     ("Starter fleet", "A new account receives a cloned 5-vessel snapshot so the demo is useful immediately."),
-    ("Private edits", "Adding MV-Alice-Only never appears on another operator's dashboard."),
+    ("Private edits", "Adding a vessel on one account never appears on another operator's dashboard."),
 ]
 for i,(head,body) in enumerate(cards):
     x = 64 + (i % 2) * 580
-    y = 430 if i < 2 else 210
-    c.setFillColor(PALE); c.roundRect(x, y, 548, 175, 12, fill=1, stroke=0)
-    text(c, head, x+24, y+125, 20, NAVY, "Helvetica-Bold")
-    text(c, body, x+24, y+90, 16, INK, max_width=490, leading=23)
+    y = 355 if i < 2 else 155
+    c.setFillColor(PALE); c.roundRect(x, y, 548, 165, 12, fill=1, stroke=0)
+    text(c, head, x+24, y+118, 20, NAVY, "Helvetica-Bold")
+    text(c, body, x+24, y+82, 16, INK, max_width=490, leading=23)
 c.showPage()
 
 # 6 architecture
-title(c, "Architecture", "One FastAPI process: Neon Postgres + static UI", 6)
+title(c, "Architecture", "Live dashboard, FastAPI, and Neon Postgres", 6)
 items=[
-    ("Frontend", "dashboard.html / admin.html call /api/vessels with Authorization. Risk, berth plan, and what-if sliders stay client-side."),
+    ("Live dashboard", "JS fetches /api/vessels with the session token, then scores risk, builds the berth plan, and runs what-if scenarios in the browser."),
     ("API + auth", "FastAPI CRUD plus register/login/SSO-demo. Tokens are signed; not production IAM."),
     ("Neon Postgres", "Remote SQLAlchemy store. No local Postgres. SQLite only if DATABASE_URL is unset."),
 ]
