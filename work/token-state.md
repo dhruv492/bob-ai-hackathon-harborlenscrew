@@ -1,6 +1,7 @@
 # Token State
-- Goal: Build an IBM Bob hackathon submission from supplied guides.
-- Done: HarborLens app, docs, IBM Bob skill, three screenshots, five-slide PDF, official template tree/workflow, aligned frontend/backend source layout, and backend health endpoint.
-- Decisions: Selected Logistics and Ports L1; used synthetic local data and a deterministic, explainable planner.
-- Files: `src/frontend/`, `src/backend/`, `docs/`, `demo/`, `presentation/`, `submission.yaml`, `.github/workflows/validate.yml`.
-- Next: Record the demo video, replace its placeholder URL, and verify the GitHub Actions run before final submission.
+- Goal: IBM Bob hackathon submission for HarborLens.
+- Done: L1 port-congestion app; frontend/backend split; Bob skill; docs; three screenshots; PDF deck; official template validator; `/health` endpoint. Latest pushed commit: `1d6a02f`.
+- Run: `python src/backend/server.py`, then open `/` and `/health` on port 8000.
+- Data: synthetic vessels; deterministic risk and berth plan logic in `src/frontend/app.js`.
+- Team: Dhruv Patel lead; Kavya Patel, Tirth Kakadia, Om Patel members. Preserve user-entered details.
+- Next: Record a real 3-5 minute demo, replace `demo/demo-video-link.txt`, verify GitHub Actions green, and resolve any email discrepancy only with user confirmation.
