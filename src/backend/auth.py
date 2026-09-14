@@ -116,3 +116,19 @@ def get_current_user(
 
     user = db.query(User).filter(User.id == payload["uid"]).first()
     return user
+
+
+def require_user(
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db),
+) -> User:
+    """Require a valid Bearer session; raise 401 if missing/invalid."""
+    from fastapi import HTTPException, status
+
+    user = get_current_user(authorization=authorization, db=db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required.",
+        )
+    return user

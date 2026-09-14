@@ -67,6 +67,8 @@ document.querySelectorAll('.eye-btn').forEach((btn) => {
 function handleAuthSuccess(data) {
   localStorage.setItem('hl_token', data.token);
   localStorage.setItem('hl_user', JSON.stringify(data.user));
+  const countKey = `hl_login_count_${data.user.id}`;
+  localStorage.setItem(countKey, String((parseInt(localStorage.getItem(countKey) || '0', 10)) + 1));
   showToast(data.message || 'Authentication successful! Redirecting...', 'success');
 
   setTimeout(() => {
@@ -148,6 +150,8 @@ byId('register-form').addEventListener('submit', async (e) => {
       throw new Error(data.detail || 'Registration failed. Please check inputs.');
     }
 
+    localStorage.setItem(`hl_is_new_user_${data.user.id}`, 'true');
+    localStorage.setItem('hl_is_new_user', 'true');
     handleAuthSuccess(data);
   } catch (err) {
     showToast(err.message, 'error');

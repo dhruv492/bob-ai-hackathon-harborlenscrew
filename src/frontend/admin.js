@@ -9,6 +9,11 @@ const FIELDS = ['vessel_id', 'eta', 'berth', 'cargo', 'priority', 'dwell', 'cran
 const INT_FIELDS = new Set(['dwell', 'cranes', 'utilization']);
 let pendingDeleteId = null;
 
+function authHeaders(extra = {}) {
+  const token = localStorage.getItem('hl_token');
+  return token ? { ...extra, Authorization: `Bearer ${token}` } : { ...extra };
+}
+
 /* ---- Toast notifications ---- */
 function toast(message, type = 'success') {
   const el = document.createElement('div');
@@ -45,7 +50,7 @@ function priorityBadge(p) {
 /* ---- Fetch and render table ---- */
 async function loadVessels() {
   try {
-    const res = await fetch(API);
+    const res = await fetch(API, { headers: authHeaders() });
     if (!res.ok) throw new Error(`API ${res.status}`);
     const vessels = await res.json();
     renderStats(vessels);
@@ -131,7 +136,7 @@ deleteOverlay.addEventListener('click', e => { if (e.target === deleteOverlay) c
 byId('delete-confirm').addEventListener('click', async () => {
   if (!pendingDeleteId) return;
   try {
-    const res = await fetch(`${API}/${pendingDeleteId}`, { method: 'DELETE' });
+    const res = await fetch(`${API}/${pendingDeleteId}`, { method: 'DELETE', headers: authHeaders() });
     if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
     toast('Vessel removed from fleet');
     closeDelete();
@@ -161,7 +166,7 @@ form.addEventListener('submit', async e => {
     const isEdit = !!dbId;
     const res = await fetch(isEdit ? `${API}/${dbId}` : API, {
       method: isEdit ? 'PUT' : 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     });
     if (!res.ok) {

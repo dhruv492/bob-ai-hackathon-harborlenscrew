@@ -1,11 +1,11 @@
-"""Seed the database with the original five vessels."""
+"""Seed helpers — each user gets their own starter fleet."""
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from database import engine, SessionLocal, Base
-from models import Vessel
+from models import Vessel, User
 
 SEED_DATA = [
     {"vessel_id": "MV-Aster", "eta": "06:00", "berth": "B-03", "cargo": "Reefer containers", "priority": "Cold chain", "dwell": 18, "cranes": 3, "utilization": 88},
@@ -16,17 +16,29 @@ SEED_DATA = [
 ]
 
 
+def ensure_user_fleet(db, user_id: int) -> int:
+    """Copy starter vessels for a user if they have none yet. Returns count added."""
+    if db.query(Vessel).filter(Vessel.user_id == user_id).count() > 0:
+        return 0
+    for data in SEED_DATA:
+        db.add(Vessel(**data, user_id=user_id))
+    db.commit()
+    return len(SEED_DATA)
+
+
 def seed():
+    """Ensure schema exists; seed fleets for any users that have none."""
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        if db.query(Vessel).count() > 0:
-            print(f"Database already has {db.query(Vessel).count()} vessels — skipping seed.")
+        users = db.query(User).all()
+        if not users:
+            print("No users yet — fleets are created when each user registers or first loads vessels.")
             return
-        for data in SEED_DATA:
-            db.add(Vessel(**data))
-        db.commit()
-        print(f"Seeded {len(SEED_DATA)} vessels.")
+        total = 0
+        for user in users:
+            total += ensure_user_fleet(db, user.id)
+        print(f"Seeded {total} vessels across {len(users)} user(s).")
     finally:
         db.close()
 

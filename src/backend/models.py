@@ -1,14 +1,16 @@
 """Vessel ORM model."""
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint, func
 
 from database import Base
 
 
 class Vessel(Base):
     __tablename__ = "vessels"
+    __table_args__ = (UniqueConstraint("user_id", "vessel_id", name="uq_user_vessel_id"),)
 
     id = Column(Integer, primary_key=True, index=True)
-    vessel_id = Column(String(50), unique=True, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    vessel_id = Column(String(50), nullable=False, index=True)
     eta = Column(String(30), nullable=False)
     berth = Column(String(10), nullable=False)
     cargo = Column(String(100), nullable=False)

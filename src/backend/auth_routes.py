@@ -13,6 +13,7 @@ from auth import (
     verify_session_token,
     get_current_user,
 )
+from seed import ensure_user_fleet
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -77,6 +78,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    ensure_user_fleet(db, new_user.id)
 
     token = create_session_token(
         user_id=new_user.id,
@@ -104,6 +106,7 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
         )
 
     expires = 30 if req.remember_me else 1
+    ensure_user_fleet(db, user.id)
     token = create_session_token(
         user_id=user.id,
         email=user.email,
@@ -137,6 +140,7 @@ def sso_demo(req: SSODemoRequest, db: Session = Depends(get_db)):
         db.add(user)
         db.commit()
         db.refresh(user)
+    ensure_user_fleet(db, user.id)
 
     token = create_session_token(
         user_id=user.id,

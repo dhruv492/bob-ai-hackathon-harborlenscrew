@@ -7,3 +7,5 @@ tmp/
 .codex-finalizer/
 /*.pdf
 !presentation/slides.pdf
+
+src/backend/harborlens.db

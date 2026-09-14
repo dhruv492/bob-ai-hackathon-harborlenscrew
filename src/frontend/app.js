@@ -6,9 +6,23 @@ if (demoMode === 'stress' || demoMode === 'brief') scenario = { weather: 2, capa
 const weatherNames = ['Clear', 'Moderate', 'Severe'];
 const byId = id => document.getElementById(id);
 
+function authHeaders(extra = {}) {
+  const token = localStorage.getItem('hl_token');
+  return token ? { ...extra, Authorization: `Bearer ${token}` } : { ...extra };
+}
+
+function userStorageKey(suffix) {
+  try {
+    const u = JSON.parse(localStorage.getItem('hl_user') || 'null');
+    return u?.id != null ? `hl_${suffix}_${u.id}` : `hl_${suffix}`;
+  } catch {
+    return `hl_${suffix}`;
+  }
+}
+
 async function fetchVessels() {
   try {
-    const res = await fetch('/api/vessels');
+    const res = await fetch('/api/vessels', { headers: authHeaders() });
     if (!res.ok) throw new Error(`API ${res.status}`);
     const data = await res.json();
     baseVessels = data.map(v => ({
@@ -209,6 +223,81 @@ function renderUserBadge() {
   }
 }
 
+/* ---- Personalized Dashboard Experience ---- */
+function showOnboarding(user) {
+  const overlay = byId('onboarding-overlay');
+  if (!overlay) return;
+  const nameEl = byId('onboard-name');
+  if (nameEl) nameEl.textContent = user.full_name.split(' ')[0];
+  overlay.hidden = false;
+
+  let current = 0;
+  const slides = overlay.querySelectorAll('.onboarding-slide');
+  const dots = overlay.querySelectorAll('.onboarding-step-dot');
+  const nextBtn = byId('onboard-next');
+  const skipBtn = byId('onboard-skip');
+
+  function goTo(idx) {
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    slides[idx].classList.add('active');
+    dots[idx].classList.add('active');
+    current = idx;
+    nextBtn.textContent = idx === slides.length - 1 ? 'Go to Dashboard →' : 'Next →';
+  }
+
+  function dismiss() {
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.hidden = true; overlay.remove(); }, 350);
+    localStorage.removeItem('hl_is_new_user');
+    localStorage.setItem(userStorageKey('last_active'), new Date().toISOString());
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (current < slides.length - 1) goTo(current + 1);
+    else dismiss();
+  });
+  skipBtn.addEventListener('click', dismiss);
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.step)));
+}
+
+function showWelcomeBack(user) {
+  const banner = byId('welcome-back-banner');
+  if (!banner) return;
+  const nameEl = byId('wb-user-name');
+  if (nameEl) nameEl.textContent = user.full_name.split(' ')[0];
+
+  const countEl = byId('wb-login-count');
+  const count = localStorage.getItem(userStorageKey('login_count')) || '1';
+  if (countEl) countEl.textContent = `#${count}`;
+
+  const timeEl = byId('wb-last-time');
+  const lastActive = localStorage.getItem(userStorageKey('last_active'));
+  if (timeEl && lastActive) {
+    const d = new Date(lastActive);
+    const now = new Date();
+    const diffH = Math.round((now - d) / 3600000);
+    timeEl.textContent = diffH < 1 ? 'just now' : diffH < 24 ? `${diffH}h ago` : `${Math.round(diffH/24)}d ago`;
+  } else if (timeEl) {
+    timeEl.textContent = 'just now';
+  }
+
+  banner.hidden = false;
+  localStorage.setItem(userStorageKey('last_active'), new Date().toISOString());
+
+  byId('wb-dismiss').addEventListener('click', () => {
+    banner.style.opacity = '0';
+    setTimeout(() => { banner.hidden = true; }, 300);
+  });
+  // Auto-dismiss after 8s
+  setTimeout(() => {
+    if (!banner.hidden) {
+      banner.style.opacity = '0';
+      setTimeout(() => { banner.hidden = true; }, 300);
+    }
+  }, 8000);
+}
+
 /* ---- init: fetch from API then render ---- */
 (async () => {
   renderUserBadge();
@@ -216,4 +305,20 @@ function renderUserBadge() {
   syncControls();
   render();
   if (demoMode === 'brief') generateBrief();
+
+  // Personalized experience
+  const rawUser = localStorage.getItem('hl_user');
+  if (rawUser) {
+    try {
+      const user = JSON.parse(rawUser);
+      const isNew = localStorage.getItem(`hl_is_new_user_${user.id}`) === 'true'
+        || localStorage.getItem('hl_is_new_user') === 'true';
+      if (isNew) {
+        localStorage.removeItem(`hl_is_new_user_${user.id}`);
+        showOnboarding(user);
+      } else {
+        showWelcomeBack(user);
+      }
+    } catch(e) { /* ignore parse error */ }
+  }
 })();
