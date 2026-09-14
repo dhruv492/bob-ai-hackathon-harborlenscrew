@@ -90,15 +90,47 @@ for item in ["Explainable risk drivers", "Berth and crane recommendation", "Weat
     y = bullet(c,item,1025,y,190)
 c.showPage()
 
-# 5 architecture and impact
-title(c, "Architecture and impact", "Deterministic planning plus IBM Bob investigation", 5)
-text(c, "HarborLens keeps calculations and the narrative aligned by using the same computed plan for the dashboard and Bob context.", 64, 505, 21, MUTED, max_width=1050)
-items=[("Web application", "Renders synthetic schedule data, risk queue, scenario controls, and plan."), ("Risk and plan engine", "Ranks risk and assigns compatible berths with transparent logic."), ("IBM Bob skill", "Guides codebase investigation and produces a cited BLUF brief without inventing facts.")]
+# 5 isolation
+title(c, "Multi-user operations", "Each supervisor sees their own fleet, not a shared queue", 5)
+cards = [
+    ("Sign in", "Register, login, or demo SSO issues a session token stored in the browser."),
+    ("Own the data", "GET/POST/PUT/DELETE /api/vessels require Bearer auth and filter by user_id."),
+    ("Starter fleet", "A new account receives a cloned 5-vessel snapshot so the demo is useful immediately."),
+    ("Private edits", "Adding MV-Alice-Only never appears on another operator's dashboard."),
+]
+for i,(head,body) in enumerate(cards):
+    x = 64 + (i % 2) * 580
+    y = 430 if i < 2 else 210
+    c.setFillColor(PALE); c.roundRect(x, y, 548, 175, 12, fill=1, stroke=0)
+    text(c, head, x+24, y+125, 20, NAVY, "Helvetica-Bold")
+    text(c, body, x+24, y+90, 16, INK, max_width=490, leading=23)
+c.showPage()
+
+# 6 architecture
+title(c, "Architecture", "One FastAPI process: Neon Postgres + static UI", 6)
+items=[
+    ("Frontend", "dashboard.html / admin.html call /api/vessels with Authorization. Risk, berth plan, and what-if sliders stay client-side."),
+    ("API + auth", "FastAPI CRUD plus register/login/SSO-demo. Tokens are signed; not production IAM."),
+    ("Neon Postgres", "Remote SQLAlchemy store. No local Postgres. SQLite only if DATABASE_URL is unset."),
+]
 for i,(head,body) in enumerate(items):
     x=64+i*390
-    c.setStrokeColor(HexColor("#A6C8FF")); c.setLineWidth(2); c.roundRect(x,250,340,170,12,fill=0,stroke=1)
-    text(c,head,x+22,375,19,NAVY,"Helvetica-Bold")
-    text(c,body,x+22,335,15,INK,max_width=290,leading=22)
-text(c, "Next step: connect authenticated terminal, AIS, weather, and labor feeds while preserving human approval and plan audit history.", 64, 155, 17, INK, "Helvetica-Bold", max_width=1050)
+    c.setStrokeColor(HexColor("#A6C8FF")); c.setLineWidth(2); c.roundRect(x,250,340,190,12,fill=0,stroke=1)
+    text(c,head,x+22,395,19,NAVY,"Helvetica-Bold")
+    text(c,body,x+22,350,15,INK,max_width=290,leading=22)
+text(c, "IBM Bob skill: src/bob-skills/port-operations.md validates the same computed brief the UI shows.", 64, 155, 17, INK, "Helvetica-Bold", max_width=1050)
+c.showPage()
+
+# 7 impact
+title(c, "Impact and ask", "Make congestion visible before it becomes a queue", 7)
+y = 500
+for item in [
+    "Supervisors get a ranked 72-hour picture with cited risk drivers.",
+    "What-if weather, berth outage, and delay stay local — they do not rewrite the database.",
+    "Bob produces a BLUF brief grounded in the current plan, not invented facts.",
+    "Prototype only: synthetic data, human approval required, no terminal control.",
+]:
+    y = bullet(c, item, 80, y, 1080)
+text(c, "HarborLens Crew  ·  Dhruv Patel, Kavya Patel, Tirth Kakadia, Om Patel", 64, 145, 15, MUTED)
 c.save()
 print(OUT)
