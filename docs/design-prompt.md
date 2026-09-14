@@ -1,4 +1,4 @@
-# Enhanced build prompt
+# Design
 
 A desktop-first web command dashboard for port shift supervisors, designed to convert vessel schedules and berth constraints into confident, explainable 72-hour actions. The tone is operational, calm, and precise - never a generic analytics dashboard.
 
