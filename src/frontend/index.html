@@ -3,54 +3,338 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="HarborLens, explainable port congestion planning." />
-    <title>HarborLens | Port Operations Copilot</title>
+    <meta name="description" content="HarborLens — Explainable port congestion prediction and 72-hour berth/crane planning copilot." />
+    <title>HarborLens | Port Operations Copilot & Congestion Intelligence</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <main class="shell">
-      <header class="topbar">
-        <div class="brand"><span class="brand-mark" aria-hidden="true">H</span><div><strong>HarborLens</strong><small>Port operations copilot</small></div></div>
-        <div class="topbar-status"><span class="dot"></span> Scenario: <strong id="scenario-name">Baseline plan</strong><time id="clock"></time></div>
-      </header>
+  <body class="landing-body">
+    <!-- Navigation Header -->
+    <header class="landing-header">
+      <div class="shell landing-nav-shell">
+        <div class="brand">
+          <a href="index.html" class="brand-link">
+            <span class="brand-mark" aria-hidden="true">H</span>
+            <div>
+              <strong>HarborLens</strong>
+              <small>Port operations copilot</small>
+            </div>
+          </a>
+        </div>
 
-      <section class="hero" aria-labelledby="page-title">
-        <div><p class="eyebrow">NEXT 72 HOURS</p><h1 id="page-title">Make congestion visible before it becomes a queue.</h1><p class="lede">An explainable operating plan for berths, cranes, and priority cargo.</p></div>
-        <button class="primary" id="brief-button">Generate shift brief <span aria-hidden="true">→</span></button>
-      </section>
+        <nav class="landing-nav-links">
+          <a href="#capabilities">Capabilities</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#architecture">Architecture</a>
+          <a href="dashboard.html" class="nav-highlight">Live Dashboard</a>
+        </nav>
 
-      <section class="metrics" aria-label="Operational picture" id="metrics"></section>
-
-      <div class="dashboard-grid">
-        <section class="panel queue-panel" aria-labelledby="queue-title">
-          <div class="panel-heading"><div><p class="eyebrow">PRIORITY QUEUE</p><h2 id="queue-title">Vessels needing attention</h2></div><span class="legend"><i class="critical"></i>Critical <i class="watch"></i>Watch</span></div>
-          <div id="vessel-list" class="vessel-list"></div>
-        </section>
-
-        <aside class="panel scenario-panel" aria-labelledby="scenario-title">
-          <p class="eyebrow">WHAT-IF STUDIO</p><h2 id="scenario-title">Stress-test the plan</h2><p class="subtle">Test operational pressure before the shift absorbs it.</p>
-          <label for="weather">Weather severity <output id="weather-value">Moderate</output></label>
-          <input id="weather" type="range" min="0" max="2" value="1" step="1" />
-          <label for="capacity">Unavailable berths <output id="capacity-value">0</output></label>
-          <input id="capacity" type="range" min="0" max="2" value="0" step="1" />
-          <label for="arrival">Arrival delay <output id="arrival-value">0 hours</output></label>
-          <input id="arrival" type="range" min="0" max="12" value="0" step="2" />
-          <div class="scenario-actions"><button class="secondary" id="reset-button">Reset</button><button class="primary" id="apply-button">Apply scenario</button></div>
-          <div class="callout"><strong>Decision boundary</strong><br />Recommendations require supervisor approval. This prototype never controls terminal systems.</div>
-        </aside>
+        <div class="landing-nav-auth" id="landing-auth-container">
+          <a href="login.html#signin" class="btn-landing-secondary">Sign in</a>
+          <a href="login.html#register" class="btn-landing-primary">Get Started</a>
+        </div>
       </div>
+    </header>
 
-      <section class="panel plan-panel" aria-labelledby="plan-title">
-        <div class="panel-heading"><div><p class="eyebrow">BERTH PLAN</p><h2 id="plan-title">Recommended 72-hour sequence</h2></div><span id="plan-note" class="subtle">Compatible berth first, urgency second</span></div>
-        <div class="table-wrap"><table><thead><tr><th>Window</th><th>Berth</th><th>Vessel</th><th>Cargo / priority</th><th>Cranes</th><th>Recommendation</th></tr></thead><tbody id="plan-body"></tbody></table></div>
-      </section>
+    <!-- Hero Section -->
+    <section class="landing-hero">
+      <div class="shell">
+        <div class="landing-badge-row">
+          <span class="landing-badge">
+            <span class="landing-badge-dot"></span>
+            IBM Bob AI Hackathon L1 · Maritime Logistics
+          </span>
+        </div>
 
-      <section class="panel brief-panel" id="brief-panel" aria-labelledby="brief-title" hidden>
-        <div class="panel-heading"><div><p class="eyebrow">IBM BOB-READY BRIEF</p><h2 id="brief-title">Grounded shift brief</h2></div><span class="tag">Structured context</span></div>
-        <div id="brief-content"></div>
-      </section>
-    </main>
-    <footer>HarborLens prototype · Synthetic operational data · Decisions remain human-approved</footer>
-    <script src="app.js"></script>
+        <h1 class="landing-headline">
+          Predict port congestion <br />
+          <span class="headline-gradient">before ships become a queue.</span>
+        </h1>
+
+        <p class="landing-subhead">
+          HarborLens gives port supervisors an <strong>explainable 72-hour operating plan</strong> for berths, cranes, and priority cargo — featuring a real-time <strong>What-If Studio</strong> to stress-test terminal throughput under extreme weather, berth outages, and fleet delays.
+        </p>
+
+        <div class="landing-cta-group">
+          <a href="login.html#register" class="btn-cta-primary" id="cta-get-started">
+            Get Started (Create Account)
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="login.html#signin" class="btn-cta-secondary" id="cta-signin">
+            Sign In
+          </a>
+          <a href="dashboard.html" class="btn-cta-ghost">
+            <span>🚢</span> Launch Dashboard
+          </a>
+        </div>
+
+        <!-- Logged In Quick Banner (Dynamically shown if signed in) -->
+        <div id="logged-in-banner" class="logged-in-banner" hidden>
+          <span class="logged-in-icon">👋</span>
+          <div>
+            <strong>Welcome back, <span id="banner-user-name">Operator</span>!</strong>
+            <p>Your session is active. Jump directly to terminal dispatch.</p>
+          </div>
+          <a href="dashboard.html" class="btn-banner-dashboard">Open Dashboard →</a>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="landing-stats-grid">
+          <div class="landing-stat-card">
+            <strong>72h</strong>
+            <span>Forward Planning Horizon</span>
+          </div>
+          <div class="landing-stat-card">
+            <strong>6-Factor</strong>
+            <span>Deterministic Scoring</span>
+          </div>
+          <div class="landing-stat-card">
+            <strong>100%</strong>
+            <span>Explainable Driver Citations</span>
+          </div>
+          <div class="landing-stat-card">
+            <strong>Zero</strong>
+            <span>Black-Box Decisions</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="landing-section" id="capabilities">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">CORE CAPABILITIES</p>
+          <h2>Designed for human-in-the-loop terminal dispatch</h2>
+          <p class="section-lede">
+            Built from operational realities: cold-chain cargo urgency, tidal timing, crane labor limits, and dynamic berth compatibility.
+          </p>
+        </div>
+
+        <div class="capabilities-grid">
+          <!-- Card 1 -->
+          <article class="capability-card">
+            <div class="cap-icon-box">📅</div>
+            <h3>72-Hour Berth Sequencing</h3>
+            <p>
+              Re-sequences incoming vessels by risk priority. Automatically staggers arrival windows to prevent berth conflict while protecting critical cold-chain commitments.
+            </p>
+            <ul class="cap-features">
+              <li>Compatible berth matching (B-01 to B-04)</li>
+              <li>Anchorage staging during full-port shutdowns</li>
+              <li>Crane allocation balancing across active vessels</li>
+            </ul>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="capability-card">
+            <div class="cap-icon-box">🧠</div>
+            <h3>Explainable Risk Scoring</h3>
+            <p>
+              Every congestion score (0–99) is derived from a transparent, deterministic formula citing specific operational drivers like berth load, dwell, and priority class.
+            </p>
+            <ul class="cap-features">
+              <li>Clear citations: "88% berth utilization", "cold chain"</li>
+              <li>Visual Critical (≥70) and Watch flags</li>
+              <li>Human supervisor approval required on reroutes</li>
+            </ul>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="capability-card">
+            <div class="cap-icon-box">🌊</div>
+            <h3>What-If Scenario Studio</h3>
+            <p>
+              Stress-test the terminal operating plan before the shift absorbs disruption. Simulate weather severity, individual berth losses (up to 4 berths), and 1-hour arrival variances.
+            </p>
+            <ul class="cap-features">
+              <li>Real-time visual berth status chips (✓ / ✕)</li>
+              <li>Dynamic projected shift impact calculation</li>
+              <li>Instant plan re-calculation on slider movement</li>
+            </ul>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="capability-card">
+            <div class="cap-icon-box">🤖</div>
+            <h3>IBM Bob Copilot Shift Briefs</h3>
+            <p>
+              Instantly generate structured Bottom Line Up Front (BLUF) shift briefings formatted specifically for IBM Bob skill verification and supervisor handover.
+            </p>
+            <ul class="cap-features">
+              <li>Synthesized executive operational summary</li>
+              <li>Prioritized action checklist by urgency</li>
+              <li>Grounded in verified deterministic code</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="landing-section section-alternate" id="how-it-works">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">WORKFLOW</p>
+          <h2>From erratic vessel arrivals to an explainable shift plan</h2>
+        </div>
+
+        <div class="workflow-steps">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h4>Dynamic Fleet Ingestion</h4>
+            <p>Vessel arrivals, cargo classifications, dwell windows, and crane requirements are fetched live from PostgreSQL REST APIs.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h4>Deterministic Risk Scoring</h4>
+            <p>HarborLens weights terminal utilization, cargo sensitivity, and weather to calculate explainable priority scores.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h4>72-Hour Optimization</h4>
+            <p>Vessels are sequenced into compatible berth slots, flagging any deviations requiring supervisor confirmation.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">04</span>
+            <h4>Stress-Testing & Handover</h4>
+            <p>Dispatchers test adverse scenarios in What-If Studio and export IBM Bob-ready shift briefs for crew handover.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture & Technology Section -->
+    <section class="landing-section" id="architecture">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">SYSTEM ARCHITECTURE</p>
+          <h2>Production-grade backend with zero bloat</h2>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-card">
+            <div class="tech-badge">BACKEND</div>
+            <h3>FastAPI & Uvicorn</h3>
+            <p>High-performance asynchronous Python API server with automated OpenAPI docs and sub-millisecond endpoints.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-badge">DATABASE</div>
+            <h3>PostgreSQL & SQLAlchemy</h3>
+            <p>Persistent relational storage for fleet manifests and operator user accounts, hosted on Neon cloud.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-badge">AUTHENTICATION</div>
+            <h3>Enterprise Auth & SSO</h3>
+            <p>Salted PBKDF2-SHA256 password hashing, signed HMAC tokens, and mock integration for Okta and Microsoft Entra.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-badge">FRONTEND</div>
+            <h3>IBM Carbon Aesthetics</h3>
+            <p>Vanilla JavaScript, accessible semantic HTML5, and curated CSS tokens matching enterprise IBM Plex standards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner Section -->
+    <section class="landing-cta-banner">
+      <div class="shell">
+        <div class="cta-banner-card">
+          <h2>Ready to optimize port congestion?</h2>
+          <p>Create your operator account or test the live prototype now.</p>
+          <div class="cta-banner-buttons">
+            <a href="login.html#register" class="btn-cta-primary">Create Operator Account →</a>
+            <a href="login.html#signin" class="btn-cta-secondary">Sign In</a>
+            <a href="dashboard.html" class="btn-cta-ghost">View Live Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="shell landing-footer-shell">
+        <div class="footer-brand">
+          <div class="brand">
+            <span class="brand-mark">H</span>
+            <strong>HarborLens</strong>
+          </div>
+          <p>Explainable port congestion prediction & 72-hour berth planning copilot.</p>
+          <small>Built for the IBM Bob AI Hackathon L1 · Team HarborLens</small>
+        </div>
+
+        <div class="footer-links-group">
+          <strong>Navigation</strong>
+          <a href="index.html">Home Overview</a>
+          <a href="dashboard.html">Operations Dashboard</a>
+          <a href="admin.html">Manage Vessels (CRUD)</a>
+          <a href="login.html">Sign In / Register</a>
+        </div>
+
+        <div class="footer-links-group">
+          <strong>Resources</strong>
+          <a href="/docs" target="_blank">FastAPI Swagger Docs</a>
+          <a href="https://github.com/dhruv492/bob-ai-hackathon-harborlenscrew" target="_blank">GitHub Repository</a>
+          <a href="dashboard.html?demo=stress">Stress Demo Mode</a>
+          <a href="dashboard.html?demo=brief">Auto-Brief Demo Mode</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="shell">
+          HarborLens prototype · Synthetic port operational data · Human-approved dispatch decisions
+        </div>
+      </div>
+    </footer>
+
+    <!-- Auth Recognition Script -->
+    <script>
+      (() => {
+        const rawUser = localStorage.getItem('hl_user');
+        if (rawUser) {
+          try {
+            const user = JSON.parse(rawUser);
+            // Update nav buttons
+            const authContainer = document.getElementById('landing-auth-container');
+            if (authContainer) {
+              authContainer.innerHTML = `
+                <div class="user-pill" title="${user.email}">
+                  <span class="user-pill-icon">👤</span>
+                  <span>${user.full_name}</span>
+                </div>
+                <a href="dashboard.html" class="btn-landing-primary">Dashboard →</a>
+                <button type="button" class="btn-landing-secondary" id="landing-signout" style="cursor:pointer">Sign out</button>
+              `;
+              document.getElementById('landing-signout').addEventListener('click', () => {
+                localStorage.removeItem('hl_token');
+                localStorage.removeItem('hl_user');
+                window.location.href = 'index.html';
+              });
+            }
+
+            // Update CTA buttons
+            const btnGetStarted = document.getElementById('cta-get-started');
+            if (btnGetStarted) {
+              btnGetStarted.textContent = 'Go to Dashboard →';
+              btnGetStarted.href = 'dashboard.html';
+            }
+            const btnSignin = document.getElementById('cta-signin');
+            if (btnSignin) {
+              btnSignin.textContent = 'Manage Vessels';
+              btnSignin.href = 'admin.html';
+            }
+
+            // Show welcome back banner
+            const banner = document.getElementById('logged-in-banner');
+            const nameEl = document.getElementById('banner-user-name');
+            if (banner && nameEl) {
+              nameEl.textContent = user.full_name;
+              banner.hidden = false;
+            }
+          } catch (e) {
+            console.error('Error parsing stored user:', e);
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

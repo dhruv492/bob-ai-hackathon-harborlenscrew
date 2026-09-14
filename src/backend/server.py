@@ -1,29 +1,45 @@
-"""Serve HarborLens without any third-party dependency."""
-from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+"""HarborLens FastAPI application — serves frontend + REST API."""
+import sys
 from pathlib import Path
-import argparse
-import json
-import os
+
+# Ensure backend directory is on sys.path for sibling imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+import uvicorn
+
+from database import engine, Base
+import models
+from routes import router as vessel_router
+from auth_routes import router as auth_router
+
+# Create tables on startup if they don't exist
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title="HarborLens", version="2.0.0")
+
+# --- API routes ---
+app.include_router(vessel_router)
+app.include_router(auth_router)
 
 
-class HarborLensHandler(SimpleHTTPRequestHandler):
-    """Serve the frontend and expose a minimal backend health check."""
-
-    def do_GET(self):
-        if self.path == "/health":
-            payload = json.dumps({"status": "ok", "service": "harborlens-backend"}).encode()
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Content-Length", str(len(payload)))
-            self.end_headers()
-            self.wfile.write(payload)
-            return
-        super().do_GET()
+@app.get("/health")
+def health_check():
+    """Backward-compatible health endpoint."""
+    return JSONResponse({"status": "ok", "service": "harborlens-backend"})
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--port", type=int, default=8000)
-args = parser.parse_args()
-os.chdir(Path(__file__).resolve().parents[1] / "frontend")
-print(f"HarborLens running at http://localhost:{args.port}")
-ThreadingHTTPServer(("", args.port), HarborLensHandler).serve_forever()
+# --- Serve frontend static files (must be last) ---
+FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, default=8000)
+    args = parser.parse_args()
+    print(f"HarborLens running at http://localhost:{args.port}")
+    uvicorn.run(app, host="0.0.0.0", port=args.port)

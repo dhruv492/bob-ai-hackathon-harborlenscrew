@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HarborLens vessel management admin panel." />
+    <title>HarborLens | Vessel Management</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:inherit">
+            <span class="brand-mark" aria-hidden="true">H</span>
+            <div><strong>HarborLens</strong><small>Vessel management</small></div>
+          </a>
+        </div>
+        <nav class="topbar-nav" style="gap:10px">
+          <a href="index.html" class="nav-link">Overview</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <div id="topbar-user" class="user-badge-wrap"></div>
+        </nav>
+      </header>
+
+      <section class="hero" aria-labelledby="admin-title">
+        <div><p class="eyebrow">ADMIN PANEL</p><h1 id="admin-title">Manage vessel data</h1><p class="lede">Add, edit, and remove vessels from the operational database.</p></div>
+        <button class="primary" id="add-btn"><span class="btn-plus">+</span> Add vessel</button>
+      </section>
+
+      <!-- Toast container -->
+      <div id="toast-container" class="toast-container"></div>
+
+      <!-- Stats bar -->
+      <section class="admin-stats" id="admin-stats"></section>
+
+      <!-- Vessel table -->
+      <section class="panel" style="margin-top:20px">
+        <div class="panel-heading">
+          <div><p class="eyebrow">FLEET REGISTRY</p><h2>Active vessels</h2></div>
+          <span class="subtle" id="vessel-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vessel ID</th><th>ETA</th><th>Berth</th><th>Cargo</th>
+                <th>Priority</th><th>Dwell</th><th>Cranes</th><th>Utilization</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="admin-body"><tr><td colspan="9" class="subtle" style="text-align:center;padding:40px">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Modal overlay -->
+      <div class="modal-overlay" id="modal-overlay" hidden>
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-icon" id="modal-icon">🚢</div>
+            <div>
+              <h2 id="modal-title">Add vessel</h2>
+              <p class="modal-subtitle" id="modal-subtitle">Enter vessel details to add to the operational fleet.</p>
+            </div>
+            <button class="modal-close" id="close-btn" aria-label="Close">✕</button>
+          </div>
+
+          <form id="vessel-form" autocomplete="off">
+            <input type="hidden" id="form-db-id" />
+
+            <div class="form-section">
+              <p class="form-section-label">🔹 Vessel Identity</p>
+              <div class="form-grid">
+                <label>
+                  <span class="field-label">Vessel ID</span>
+                  <input id="f-vessel_id" type="text" required maxlength="50" placeholder="e.g. MV-Horizon" />
+                  <span class="field-hint">Unique vessel identifier</span>
+                </label>
+                <label>
+                  <span class="field-label">Estimated Arrival</span>
+                  <input id="f-eta" type="text" required maxlength="30" placeholder="e.g. 06:00 or Day 2 · 14:00" />
+                  <span class="field-hint">Time or relative window</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <p class="form-section-label">📦 Cargo & Assignment</p>
+              <div class="form-grid">
+                <label>
+                  <span class="field-label">Berth</span>
+                  <input id="f-berth" type="text" required maxlength="10" placeholder="e.g. B-01" />
+                  <span class="field-hint">Assigned berth code</span>
+                </label>
+                <label>
+                  <span class="field-label">Cargo Type</span>
+                  <input id="f-cargo" type="text" required maxlength="100" placeholder="e.g. Reefer containers" />
+                  <span class="field-hint">Primary cargo description</span>
+                </label>
+                <label>
+                  <span class="field-label">Priority Class</span>
+                  <div class="select-wrap">
+                    <select id="f-priority" required>
+                      <option value="Standard">Standard</option>
+                      <option value="Cold chain">Cold chain</option>
+                      <option value="Connection-sensitive">Connection-sensitive</option>
+                      <option value="High value">High value</option>
+                    </select>
+                  </div>
+                  <span class="field-hint">Determines risk scoring weight</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <p class="form-section-label">⚙️ Operational Parameters</p>
+              <div class="form-grid form-grid-3">
+                <label>
+                  <span class="field-label">Dwell Time</span>
+                  <div class="input-unit">
+                    <input id="f-dwell" type="number" required min="1" max="168" placeholder="12" />
+                    <span class="unit">hours</span>
+                  </div>
+                  <span class="field-hint">1–168 hours</span>
+                </label>
+                <label>
+                  <span class="field-label">Cranes Required</span>
+                  <div class="input-unit">
+                    <input id="f-cranes" type="number" required min="1" max="10" placeholder="2" />
+                    <span class="unit">units</span>
+                  </div>
+                  <span class="field-hint">1–10 cranes</span>
+                </label>
+                <label>
+                  <span class="field-label">Berth Utilization</span>
+                  <div class="input-unit">
+                    <input id="f-utilization" type="number" required min="0" max="100" placeholder="75" />
+                    <span class="unit">%</span>
+                  </div>
+                  <span class="field-hint">0–100 percent</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="secondary" id="cancel-btn">Cancel</button>
+              <button type="submit" class="primary" id="save-btn">
+                <span id="save-label">Save vessel</span>
+                <span id="save-spinner" class="spinner" hidden></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete confirmation modal -->
+      <div class="modal-overlay" id="delete-overlay" hidden>
+        <div class="modal modal-sm">
+          <div class="modal-header">
+            <div class="modal-icon modal-icon-danger">⚠️</div>
+            <div>
+              <h2>Confirm deletion</h2>
+              <p class="modal-subtitle">This action cannot be undone.</p>
+            </div>
+          </div>
+          <p class="delete-msg">Are you sure you want to remove <strong id="delete-name"></strong> from the fleet?</p>
+          <div class="modal-footer">
+            <button class="secondary" id="delete-cancel">Keep vessel</button>
+            <button class="danger" id="delete-confirm">Delete vessel</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>HarborLens prototype · Vessel management admin panel</footer>
+    <script src="admin.js"></script>
+  </body>
+</html>
