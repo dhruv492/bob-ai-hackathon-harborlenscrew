@@ -10,10 +10,10 @@ HarborLens turns a changing vessel schedule into an explainable 72-hour operatin
 |---|---|
 | **Team Name** | HarborLens Crew |
 | **Track** | AI |
-| **Team Lead** | Dhruv Patel    -  24ce077@charusat.edu.in  |
-| **Members** | 1. Kavya Patel   -  24aiml038@charusat.edu.in|
-|             | 2. Tirth Kakadia -  25aiml025@charusat.edu.in|
-|             | 3. Om Patel      -  25cs074@charusat.edu.in  |
+| **Team Lead** | Dhruv Patel    -  24ce077@charusat.edu.in   |
+| **Members** | 1. Kavya Patel   -  24aiml038@charusat.edu.in |
+|             | 2. Tirth Kakadiya -  25aiml025@charusat.edu.in|
+|             | 3. Om Patel      -  25cs074@charusat.edu.in   |
 
 ---
 
