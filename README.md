@@ -109,8 +109,7 @@ Open `http://localhost:8000`. Full prerequisites, verification steps, IBM Bob wo
 
 | Artifact | Link |
 |---|---|
-| Demo Video | [demo/demo-video-link.txt](demo/demo-video-link.txt) |
-| Live Demo | [demo/live-demo-url.txt](demo/live-demo-url.txt) |
+| Demo Video | [demo/demo-video-link.txt](demo/demo-video-link.md) |
 | Screenshots | [demo/screenshots/](demo/screenshots/) |
 | Presentation | [presentation/slides.pdf](presentation/slides.pdf) |
 
