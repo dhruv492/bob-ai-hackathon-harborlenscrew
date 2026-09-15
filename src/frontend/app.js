@@ -480,47 +480,6 @@ function renderUserBadge() {
 }
 
 /* ---- Personalized Dashboard Experience ---- */
-function showOnboarding(user) {
-  const overlay = byId('onboarding-overlay');
-  if (!overlay) return;
-  const nameEl = byId('onboard-name');
-  if (nameEl) nameEl.textContent = user.full_name.split(' ')[0];
-  overlay.hidden = false;
-
-  let current = 0;
-  const slides = overlay.querySelectorAll('.onboarding-slide');
-  const dots = overlay.querySelectorAll('.onboarding-step-dot');
-  const nextBtn = byId('onboard-next');
-  const skipBtn = byId('onboard-skip');
-
-  function goTo(idx) {
-    slides.forEach(s => s.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
-    slides[idx].classList.add('active');
-    dots[idx].classList.add('active');
-    current = idx;
-    nextBtn.textContent = idx === slides.length - 1 ? 'Go to Dashboard →' : 'Next →';
-  }
-
-  function dismiss() {
-    overlay.style.opacity = '0';
-    setTimeout(() => { overlay.hidden = true; overlay.remove(); }, 350);
-    localStorage.removeItem('hl_is_new_user');
-    try {
-      const u = JSON.parse(localStorage.getItem('hl_user') || 'null');
-      if (u?.id != null) localStorage.removeItem(`hl_is_new_user_${u.id}`);
-    } catch {}
-    localStorage.setItem(userStorageKey('last_active'), new Date().toISOString());
-  }
-
-  nextBtn.addEventListener('click', () => {
-    if (current < slides.length - 1) goTo(current + 1);
-    else dismiss();
-  });
-  skipBtn.addEventListener('click', dismiss);
-  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.step)));
-}
-
 function showWelcomeBack(user) {
   const banner = byId('welcome-back-banner');
   if (!banner) return;
@@ -627,20 +586,12 @@ function startDemoWalkthrough(mode) {
   if (demoMode === 'brief') { generateBrief(); setTimeout(() => startDemoWalkthrough('brief'), 800); }
   if (demoMode === 'stress') setTimeout(() => startDemoWalkthrough('stress'), 800);
 
-  // Personalized experience
+  // Personalized experience — welcome-back banner for all logged-in users
   const rawUser = localStorage.getItem('hl_user');
   if (rawUser) {
     try {
       const user = JSON.parse(rawUser);
-      const isNew = localStorage.getItem(`hl_is_new_user_${user.id}`) === 'true'
-        || localStorage.getItem('hl_is_new_user') === 'true';
-      if (isNew) {
-        localStorage.removeItem(`hl_is_new_user_${user.id}`);
-        localStorage.removeItem('hl_is_new_user');
-        showOnboarding(user);
-      } else {
-        showWelcomeBack(user);
-      }
+      showWelcomeBack(user);
     } catch(e) { /* ignore parse error */ }
   }
 })();
