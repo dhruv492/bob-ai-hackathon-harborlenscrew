@@ -1,25 +1,21 @@
 # Screenshots
 
-Capture these three screenshots after running `python src/backend/server.py` and signing in.
+Three screenshots of the running HarborLens prototype.
 
-## 01 — Home Dashboard (`01-home-dashboard.png`)
+| File | What it shows |
+|---|---|
+| `Screenshot 2026-09-15 104713.png` | Operations dashboard — priority queue with SVG risk ring gauges, Critical/Watch level badges, inline utilization bars, and the What-If Studio panel at baseline |
+| `Screenshot 2026-09-15 104720.png` | 72-hour recommended berth plan table — vessel sequence, berth assignments, cargo/priority, crane count, and Supervisor review / Ready to stage recommendations |
+| `Screenshot 2026-09-15 104733.png` | Admin vessel management panel — fleet stats bar, active vessels table with priority badges, utilization bars, and Edit/Delete actions |
+| `Screenshot 2026-09-15 103940.png` | Landing page — How It Works workflow steps and System Architecture tech cards |
+| `Screenshot 2026-09-15 103947.png` | Landing page — CTA banner and footer with navigation links |
+| `Screenshot 2026-09-15 103957.png` | Sign In page — email/password form with Okta SSO and Microsoft Entra buttons |
+| `Screenshot 2026-09-15 104001.png` | Register page — account creation form |
 
-**URL:** `http://localhost:8000/dashboard.html`  
-**What to show:** Full dashboard with the new SVG ring gauges visible on vessel cards, the fleet utilization bar chart panel below the 4 metrics, and the vessel priority queue showing Critical/Watch level badges.  
-**Suggested state:** Baseline plan (no scenario applied).
+## Running the app
 
-## 02 — Scenario Studio with Diff (`02-scenario-studio.png`)
+```powershell
+python src/backend/server.py
+```
 
-**URL:** `http://localhost:8000/dashboard.html`  
-**What to show:** Set Weather → Severe, Unavailable berths → 1, Arrival variance → 6h. Click **Apply scenario**. Capture the yellow-highlighted diff rows in the Berth Plan table (showing struck-through old berths → new berths and ▲/▼ score deltas), and the red "Stress active" chip in the What-If Studio panel.  
-**Suggested state:** After clicking "Apply scenario" so the diff banner and row highlights are visible.
-
-## 03 — IBM Bob-Ready Brief (`03-bob-ready-brief.png`)
-
-**URL:** `http://localhost:8000/dashboard.html`  
-**What to show:** Click **Generate shift brief** (with stress scenario still active). Capture the new two-column polished brief panel showing: timestamp + "⚠ Stress scenario active" badge, BLUF paragraph, numbered priority action rows with risk pills, and the Top-3 Risk Vessels table with mini ring gauges.  
-**Suggested state:** Stress scenario active so the brief shows critical content and the stress badge.
-
----
-
-The application is local-first — screenshots must be captured from the running app before final submission.
+Open `http://localhost:8000`. Sign in or register to access the dashboard.
