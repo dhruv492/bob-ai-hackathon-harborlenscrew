@@ -93,11 +93,24 @@
 
       <section class="metrics" aria-label="Operational picture" id="metrics"></section>
 
+      <!-- Utilization Chart -->
+      <section class="panel util-chart-panel" aria-label="Berth utilization chart">
+        <div class="panel-heading">
+          <div><p class="eyebrow">BERTH UTILIZATION</p><h2>Fleet utilization &amp; risk overview</h2></div>
+          <span class="subtle util-chart-legend">
+            <span class="util-legend-dot" style="background:#198038"></span> &lt;60%
+            <span class="util-legend-dot" style="background:#f1c21b"></span> 60–79%
+            <span class="util-legend-dot" style="background:#da1e28"></span> ≥80% · r = risk score
+          </span>
+        </div>
+        <div class="util-chart-wrap" id="util-chart"></div>
+      </section>
+
       <div class="dashboard-grid">
         <section class="panel queue-panel" aria-labelledby="queue-title">
           <div class="panel-heading">
             <div><p class="eyebrow">PRIORITY QUEUE</p><h2 id="queue-title">Vessels needing attention</h2></div>
-            <span class="legend"><i class="critical"></i>Critical <i class="watch"></i>Watch</span>
+            <span class="legend"><i class="critical"></i>Critical ≥70 <i class="watch"></i>Watch 40–69</span>
           </div>
           <div id="vessel-list" class="vessel-list"></div>
         </section>
